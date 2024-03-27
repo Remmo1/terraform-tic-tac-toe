@@ -132,8 +132,15 @@ const App = () => {
     const username = result.value;
     setPlayerName(username);
 
-    console.log(backendLink);
-    const newSocket = io(backendLink, {
+    // Get the current URL of the frontend app
+    const currentUrl = window.location.href;
+    // Extract the protocol and IP address from the URL
+    const [, protocol, ipAddress] = currentUrl.match(/(.*?)\/\/(.*?)\:/);
+    const backendPort = 8080;
+    const backendAddress = protocol + '//' + ipAddress + ':' + backendPort;
+    
+    console.log(backendAddress);
+    const newSocket = io(backendAddress, {
       autoConnect: true,
     });
 

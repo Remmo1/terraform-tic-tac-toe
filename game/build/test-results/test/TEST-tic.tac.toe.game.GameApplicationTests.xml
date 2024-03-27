@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="tic.tac.toe.game.GameApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-03-20T07:18:58" hostname="CVEN0048" time="1.591">
+<testsuite name="tic.tac.toe.game.GameApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-03-27T11:22:00" hostname="CVEN0048" time="1.735">
   <properties/>
-  <testcase name="contextLoads()" classname="tic.tac.toe.game.GameApplicationTests" time="1.591"/>
-  <system-out><![CDATA[08:18:52.469 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [tic.tac.toe.game.GameApplicationTests]: GameApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-08:18:52.632 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration tic.tac.toe.game.GameApplication for test class tic.tac.toe.game.GameApplicationTests
+  <testcase name="contextLoads()" classname="tic.tac.toe.game.GameApplicationTests" time="1.735"/>
+  <system-out><![CDATA[12:21:55.760 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [tic.tac.toe.game.GameApplicationTests]: GameApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+12:21:55.893 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration tic.tac.toe.game.GameApplication for test class tic.tac.toe.game.GameApplicationTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -13,13 +13,13 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.2.3)
 
-2024-03-20T08:18:53.301+01:00  INFO 13428 --- [game] [    Test worker] tic.tac.toe.game.GameApplicationTests    : Starting GameApplicationTests using Java 21.0.2 with PID 13428 (started by RPisarski in C:\Program Files (x86)\Projekty\tic-tac-toe-app\game)
-2024-03-20T08:18:53.303+01:00  INFO 13428 --- [game] [    Test worker] tic.tac.toe.game.GameApplicationTests    : No active profile set, falling back to 1 default profile: "default"
-2024-03-20T08:18:57.532+01:00  INFO 13428 --- [game] [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
-2024-03-20T08:18:57.643+01:00  INFO 13428 --- [game] [    Test worker] tic.tac.toe.game.GameApplicationTests    : Started GameApplicationTests in 4.736 seconds (process running for 6.407)
-2024-03-20T08:18:57.806+01:00  INFO 13428 --- [game] [    Test worker] c.c.socketio.SocketIOServer              : Session store / pubsub factory used: MemoryStoreFactory (local session store only)
-2024-03-20T08:18:58.490+01:00  INFO 13428 --- [game] [    Test worker] t.tac.toe.game.ServerCommandLineRunner   : Socket io server: localhost:8080
-2024-03-20T08:18:58.490+01:00  INFO 13428 --- [game] [ntLoopGroup-2-1] c.c.socketio.SocketIOServer              : SocketIO server started at port: 8080
+2024-03-27T12:21:56.443+01:00  INFO 26488 --- [game] [    Test worker] tic.tac.toe.game.GameApplicationTests    : Starting GameApplicationTests using Java 21.0.2 with PID 26488 (started by RPisarski in C:\Program Files (x86)\Projekty\tic-tac-toe-app\game)
+2024-03-27T12:21:56.443+01:00  INFO 26488 --- [game] [    Test worker] tic.tac.toe.game.GameApplicationTests    : No active profile set, falling back to 1 default profile: "default"
+2024-03-27T12:21:59.465+01:00  INFO 26488 --- [game] [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2024-03-27T12:21:59.574+01:00  INFO 26488 --- [game] [    Test worker] tic.tac.toe.game.GameApplicationTests    : Started GameApplicationTests in 3.451 seconds (process running for 5.078)
+2024-03-27T12:21:59.767+01:00  INFO 26488 --- [game] [    Test worker] c.c.socketio.SocketIOServer              : Session store / pubsub factory used: MemoryStoreFactory (local session store only)
+2024-03-27T12:22:00.134+01:00  INFO 26488 --- [game] [ntLoopGroup-2-1] c.c.socketio.SocketIOServer              : SocketIO server started at port: 8080
+2024-03-27T12:22:00.134+01:00  INFO 26488 --- [game] [    Test worker] t.tac.toe.game.ServerCommandLineRunner   : Socket io server: 0.0.0.0:8080
 ]]></system-out>
   <system-err><![CDATA[WARNING: A Java agent has been loaded dynamically (C:\Users\rpisarski\.gradle\caches\modules-2\files-2.1\net.bytebuddy\byte-buddy-agent\1.14.12\be4984cb6fd1ef1d11f218a648889dfda44b8a15\byte-buddy-agent-1.14.12.jar)
 WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
