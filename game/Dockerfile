@@ -1,13 +1,28 @@
 FROM openjdk:17-jdk-alpine
 
-VOLUME /tmp
+# Set the working directory in the container
+WORKDIR /app
 
-ARG JAR_FILE
+# Copy the Gradle build files
+COPY build.gradle .
+COPY settings.gradle .
 
-COPY ${JAR_FILE} app.jar
+# Copy the Gradle wrapper
+COPY gradlew .
+COPY gradle ./gradle
 
+# Copy the source code
+COPY src ./src
+
+# Build the application
+RUN ./gradlew build
+
+# Expose the port the app runs on
 EXPOSE 8080
-CMD ["java","-jar","/app.jar"]
+
+# Run the application
+CMD ["java", "-jar", "build/libs/game-0.0.1-SNAPSHOT.jar"]
+
 # docker build --build-arg JAR_FILE=build/libs/game-0.0.1-SNAPSHOT.jar -t remmo1/tic-tac-toe-spring:0.0.1-SNAPSHOT .
 # docker run -p 8080:8080 remmo1/tic-tac-toe-spring:0.0.1-SNAPSHOT
 

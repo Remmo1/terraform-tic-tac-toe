@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: game
-server:
-  port: 8000
-
-socket-server:
-  port: 8080
-  host: 0.0.0.0
