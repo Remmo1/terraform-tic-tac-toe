@@ -11,6 +11,7 @@ const renderFrom = [
 ];
 
 const backendLink = process.env.REACT_APP_BACKEND_LINK;
+const backendPort = 8080;
 
 const App = () => {
   const [gameState, setGameState] = useState(renderFrom);
@@ -132,12 +133,8 @@ const App = () => {
     const username = result.value;
     setPlayerName(username);
 
-    // Get the current URL of the frontend app
-    const currentUrl = window.location.href;
-    // Extract the protocol and IP address from the URL
-    const [, protocol, ipAddress] = currentUrl.match(/(.*?)\/\/(.*?)\:/);
-    const backendPort = 8080;
-    const backendAddress = protocol + '//' + ipAddress + ':' + backendPort;
+  
+    const backendAddress = backendLink || window.location.protocol + '//' + window.location.hostname + ':' + backendPort;
     
     console.log(backendAddress);
     const newSocket = io(backendAddress, {
