@@ -28,7 +28,7 @@ public class SocketModule {
 
     private DataListener<Map> onPlayerMoveFromClient() {
         return (socketIOClient, gameState, ackRequest) -> {
-            log.info("Move: {}", gameState.get("state"));
+            log.info("Player {} moves: {}", allPlayers.get(socketIOClient.getSessionId()).getName(), gameState.get("state"));
             var rival = allPlayers.get(socketIOClient.getSessionId()).getRival();
             rival.getSocketIOClient().sendEvent("playerMoveFromServer", gameState);
         };
@@ -36,15 +36,17 @@ public class SocketModule {
 
     private ConnectListener onConnected() {
         return client -> {
-            log.info("Socket id entered: {} ", client.getSessionId());
-            allPlayers.put(client.getSessionId(),
-                    Player.builder().id(client.getSessionId()).socketIOClient(client).online(true).playing(false).build());
+            if (!allPlayers.containsKey(client.getSessionId())) {
+                log.info("Socket id entered: {} ", client.getSessionId());
+                allPlayers.put(client.getSessionId(),
+                        Player.builder().id(client.getSessionId()).socketIOClient(client).online(true).playing(false).build());
+            }
         };
     }
 
     private DataListener<NickRequest> onRequestToPlay() {
         return (socketIOClient, o, ackRequest) -> {
-            log.info("New player: {}", o.getPlayerName());
+            log.info("New player waiting in the lobby: {}", o.getPlayerName());
             var actualPlayer = allPlayers.get(socketIOClient.getSessionId());
             actualPlayer.setName(o.getPlayerName());
             Player opponent = null;
@@ -61,7 +63,12 @@ public class SocketModule {
             if (opponent != null) {
                 actualPlayer.setRival(opponent);
                 opponent.setRival(actualPlayer);
-                allRooms.add(Room.builder().currentPlayer(opponent).currentPlayer(actualPlayer).build());
+                actualPlayer.setPlaying(true);
+                opponent.setPlaying(true);
+
+                Room newRoom = Room.builder().id(UUID.randomUUID()).current(actualPlayer).opponent(opponent).build();
+                allRooms.add(newRoom);
+                log.info("Room {} created for: {} vs {}", newRoom.getId(), newRoom.getCurrent().getName(), newRoom.getOpponent().getName());
 
                 var playerJson = Map.of(
                         "opponentName", opponent.getName(),
