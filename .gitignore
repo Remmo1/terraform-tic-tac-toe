@@ -40,4 +40,7 @@ out/
 **/node_modules/
 
 ### Terraform ###
-**/terraform
+**/terraform/key-for-demo
+**/terraform/key-for-demo.pem
+**/terraform/key-for-demo.pub
+**/terraform/.terraform
