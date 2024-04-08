@@ -28,7 +28,13 @@ public class SocketModule {
 
     private DataListener<Map> onPlayerMoveFromClient() {
         return (socketIOClient, gameState, ackRequest) -> {
-            log.info("Player {} moves: {}", allPlayers.get(socketIOClient.getSessionId()).getName(), gameState.get("state"));
+            var actualRoom = allRooms.stream().filter(r -> (r.getCurrent().getId() == socketIOClient.getSessionId())
+                    || (r.getOpponent().getId() == socketIOClient.getSessionId())).findAny();
+            if (actualRoom.isEmpty())
+                throw new RuntimeException("Room not found for socket id: " + socketIOClient.getSessionId());
+
+            log.info("Room {}: Player {} moves: {}", actualRoom.get().getId(),
+                    allPlayers.get(socketIOClient.getSessionId()).getName(), gameState.get("state"));
             var rival = allPlayers.get(socketIOClient.getSessionId()).getRival();
             rival.getSocketIOClient().sendEvent("playerMoveFromServer", gameState);
         };
@@ -95,9 +101,14 @@ public class SocketModule {
 
             actualPlayer.setOnline(false);
             actualPlayer.setPlaying(false);
+            var actualRoom = allRooms.stream().filter(r -> (r.getCurrent().getId() == client.getSessionId())
+                    || (r.getOpponent().getId() == client.getSessionId())).findAny();
 
-            if (actualPlayer.getRival() != null) {
+            if (actualPlayer.getRival() != null && actualRoom.isPresent()) {
                 actualPlayer.getRival().getSocketIOClient().sendEvent("opponentLeftMatch");
+                log.info("Room {} closed: Player {} left the game", actualPlayer.getId(), allPlayers.get(client.getSessionId()).getName());
+                allRooms.remove(actualRoom.get());
+                allPlayers.remove(client.getSessionId());
             }
         };
     }
