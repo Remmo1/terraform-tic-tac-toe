@@ -41,6 +41,6 @@ out/
 
 ### Terraform ###
 **/terraform/key-for-demo
-**/terraform/key-for-demo.pem
-**/terraform/key-for-demo.pub
+**/terraform/*.pub
+**/terraform/*.pem
 **/terraform/.terraform

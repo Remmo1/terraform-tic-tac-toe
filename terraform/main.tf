@@ -3,7 +3,7 @@ provider "aws" {
   profile = "default"
 }
 
-resource "aws_instance" "public_instance" {
+resource "aws_instance" "ec2_tic_tac_toe" {
   ami                    = "ami-0c101f26f147fa7fd"
   instance_type          = "t2.medium"
   key_name               = "key-for-demo"
@@ -11,38 +11,54 @@ resource "aws_instance" "public_instance" {
   vpc_security_group_ids = [aws_security_group.main.id]
 
   tags = {
-    Name = "Tic tac toe"
+    Name = "Ec2 Tic-tac-toe tf"
   }
 }
 
-resource "aws_vpc" "vpc_a" {
+resource "aws_vpc" "vpc_tf" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_support   = true
   enable_dns_hostnames = true
+
+  tags = {
+    Name = "Vpc Tic-tac-toe tf"
+  }
 }
 
-resource "aws_subnet" "subnet_a" {
-  vpc_id     = aws_vpc.vpc_a.id
+resource "aws_subnet" "subnet_tf" {
+  vpc_id     = aws_vpc.vpc_tf.id
   cidr_block = "10.0.1.0/24"
+
+  tags = {
+    Name = "Subnet Tic-tac-toe tf"
+  }
 }
 
-resource "aws_internet_gateway" "igw_a" {
-  vpc_id = aws_vpc.vpc_a.id
+resource "aws_internet_gateway" "igw_tf" {
+  vpc_id = aws_vpc.vpc_tf.id
+
+  tags = {
+    Name = "Gateway Tic-tac-toe tf"
+  }
 }
 
-resource "aws_route_table" "rt_a" {
-  vpc_id = aws_vpc.vpc_a.id
+resource "aws_route_table" "rt_tf" {
+  vpc_id = aws_vpc.vpc_tf.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.igw_a.id
+    gateway_id = aws_internet_gateway.igw_tf.id
+  }
+
+  tags = {
+    Name = "Route table Tic-tac-toe tf"
   }
 
 }
 
-resource "aws_route_table_association" "rta_subnet_a" {
-  subnet_id      = aws_subnet.subnet_a.id
-  route_table_id = aws_route_table.rt_a.id
+resource "aws_route_table_association" "subnet_tf" {
+  subnet_id      = aws_subnet.subnet_tf.id
+  route_table_id = aws_route_table.rt_tf.id
 }
 
 
@@ -81,11 +97,11 @@ resource "aws_security_group" "main" {
 
 resource "aws_key_pair" "deployer" {
   key_name = "key-for-demo"
-  public_key = "key-for-demo.pub"
+  public_key = file("/home/remmo/ansible-tutorial/key-for-demo.pub")
 }
 
 resource "null_resource" "run_ansible" {
-  depends_on = [aws_instance.public_instance]
+  depends_on = [aws_instance.ec2_tic_tac_toe]
 
   provisioner "local-exec" {
     command = "ansible-playbook -i inventory.ini deploy-app.yml"
