@@ -13,6 +13,8 @@ resource "aws_instance" "ec2_tic_tac_toe" {
   tags = {
     Name = "Ec2 Tic-tac-toe tf"
   }
+
+  user_data = "${file("install-app.sh")}"
 }
 
 resource "aws_vpc" "vpc_tf" {
@@ -97,14 +99,14 @@ resource "aws_security_group" "main" {
 
 resource "aws_key_pair" "deployer" {
   key_name = "key-for-demo"
-  public_key = file("/home/remmo/ansible-tutorial/key-for-demo.pub")
+  public_key = "${file("key-for-demo.pub")}"
 }
 
-resource "null_resource" "run_ansible" {
-  depends_on = [aws_instance.ec2_tic_tac_toe]
+# resource "null_resource" "run_ansible" {
+#   depends_on = [aws_instance.ec2_tic_tac_toe]
 
-  provisioner "local-exec" {
-    command = "ansible-playbook -i inventory.ini deploy-app.yml"
-    working_dir = path.module
-  }
-}
+#   provisioner "local-exec" {
+#     command = "ansible-playbook -i inventory.ini deploy-app.yml"
+#     working_dir = path.module
+#   }
+# }
