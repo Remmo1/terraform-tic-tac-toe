@@ -14,7 +14,7 @@ resource "aws_instance" "ec2_tic_tac_toe" {
     Name = "Ec2 Tic-tac-toe tf"
   }
 
-  user_data = "${file("install-app.sh")}"
+  # user_data = "${file("install-app.sh")}"
 }
 
 resource "aws_vpc" "vpc_tf" {
@@ -81,20 +81,13 @@ resource "aws_security_group" "main" {
   }
   
   ingress {
-    from_port   = 8080
-    to_port     = 8080
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
-    description = "Backend"
+    description = "nginx"
     cidr_blocks = ["0.0.0.0/0"]
   }
   
-  ingress {
-    from_port   = 3000
-    to_port     = 3000
-    protocol    = "tcp"
-    description = "Frontend"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 }
 
 resource "aws_key_pair" "deployer" {

@@ -133,7 +133,7 @@ const App = () => {
     const username = result.value;
     setPlayerName(username);
 
-  
+    console.log(backendLink);
     const backendAddress = backendLink || window.location.protocol + '//' + window.location.hostname + ':' + backendPort;
     
     console.log(backendAddress);

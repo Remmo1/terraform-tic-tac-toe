@@ -3,6 +3,7 @@ version: '3.8'
 services:
   backend:
     # image: remmo1/tic-tac-toe-spring:0.0.1-SNAPSHOT
+    container_name: backend
     build:
       context: ./game
       dockerfile: Dockerfile
@@ -13,8 +14,11 @@ services:
   
   frontend:
     # image: remmo1/tic-tac-toe-react:0.0.1-SNAPSHOT
+    container_name: frontend
     build:
       context: ./tic-tac-toe-react
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    environment:
+      - REACT_APP_BACKEND_LINK=http://127.0.0.1:8080
