@@ -25,5 +25,5 @@ variable key_private {
 
 variable key_public {
     type        = string
-    description = "Public key name"
+    description = "Paht to public key"
 }

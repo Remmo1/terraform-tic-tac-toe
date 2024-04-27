@@ -5,11 +5,8 @@ terraform {
       version = "~> 4.16"
     }
   }
-}
 
-provider "aws" {
-    region = "us-east-1"
-    profile = "default"
+  required_version = ">= 1.2.0"
 }
 
 module "tic-tac-toe-application" {
