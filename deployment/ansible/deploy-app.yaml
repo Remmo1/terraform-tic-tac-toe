@@ -1,0 +1,44 @@
+---
+- name: Install Docker, Docker Compose, Git, Downloading Repo and Running it
+  hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - name: Install Programs
+      yum:
+        name:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+          - python3-pip
+          - git
+          - docker
+        state: present
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Download Docker Compose binary
+      shell: wget -q https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -O /usr/local/bin/docker-compose
+      args:
+        creates: /usr/local/bin/docker-compose
+
+    - name: Make Docker Compose executable
+      file: dest=/usr/local/bin/docker-compose mode=a+x
+    
+    - name: Download Repo
+      git:
+        repo: "https://github.com/Remmo1/terraform-tic-tac-toe.git"
+        dest: /home/ec2-user/game
+        clone: yes
+
+    - name: Make .gradlew file executable
+      file: dest=/home/ec2-user/game/game/gradlew mode=a+x
+
+    - name: Run docker-compose up
+      command: docker-compose up -d
+      args:
+        chdir: /home/ec2-user/game

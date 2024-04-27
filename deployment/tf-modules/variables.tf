@@ -18,8 +18,12 @@ variable instance_type {
     description = "Linux machine size"
 }
 
-variable key_name {
+variable key_private {
     type        = string
-    default     = "key-tf.pem"
+    description = "Private key name"
+}
+
+variable key_public {
+    type        = string
     description = "Private key name"
 }
