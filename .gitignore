@@ -47,3 +47,6 @@ out/
 
 ### Keys ###
 **/deployment/keys/
+**/deployment/.terraform/
+**/deployment/.terraform.lock.hcl
+**/deployment/terraform.tfstate

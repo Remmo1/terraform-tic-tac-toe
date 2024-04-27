@@ -9,6 +9,11 @@ terraform {
   required_version = ">= 1.2.0"
 }
 
+provider "aws" {
+    region = "us-east-1"
+    profile = "default"
+}
+
 module "tic-tac-toe-application" {
     source = "./tf-modules"
 
