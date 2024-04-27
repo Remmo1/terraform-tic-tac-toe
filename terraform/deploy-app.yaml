@@ -13,6 +13,7 @@
           - python3-pip
           - git
           - docker
+          - nginx
         state: present
 
     - name: Start Docker service
@@ -33,6 +34,7 @@
       git:
         repo: "https://github.com/Remmo1/terraform-tic-tac-toe.git"
         dest: /home/ec2-user/game
+        version: "feature/nginx"
         clone: yes
 
     - name: Make .gradlew file executable
@@ -42,3 +44,15 @@
       command: docker-compose up -d
       args:
         chdir: /home/ec2-user/game
+
+    - name: Copy nginx.conf to the server
+      copy:
+        src: nginx.conf
+        dest: /etc/nginx/nginx.conf
+      become: yes
+
+    - name: Start Nginx service
+      service:
+        name: nginx
+        state: started
+      become: yes

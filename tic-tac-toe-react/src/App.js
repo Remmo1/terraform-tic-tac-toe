@@ -137,7 +137,7 @@ const App = () => {
     const backendAddress = backendLink || window.location.protocol + '//' + window.location.hostname + ':' + backendPort;
     
     console.log(backendAddress);
-    const newSocket = io(backendAddress, {
+    const newSocket = io(':80', {
       autoConnect: true,
     });
 
