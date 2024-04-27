@@ -25,5 +25,5 @@ variable key_private {
 
 variable key_public {
     type        = string
-    description = "Private key name"
+    description = "Public key name"
 }
