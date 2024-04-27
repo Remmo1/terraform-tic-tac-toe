@@ -44,3 +44,6 @@ out/
 **/terraform/*.pub
 **/terraform/*.pem
 **/terraform/.terraform
+
+### Keys ###
+**/deployment/keys/
