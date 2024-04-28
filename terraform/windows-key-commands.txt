@@ -1,3 +1,0 @@
-Refactor private key to make it work:
-icacls .\private.key /inheritance:r
-icacls .\private.key /grant:r rpisarski:"(R)"
