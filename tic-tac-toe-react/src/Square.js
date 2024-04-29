@@ -68,6 +68,14 @@ const Square = ({
     }
 
     if (!icon) {
+      // when the field is taken by the rival
+      const rowIndex = Math.floor(id / 3);
+      const colIndex = id % 3;
+      if (gameState[rowIndex][colIndex] === 'circle' || gameState[rowIndex][colIndex] === 'cross') {
+        return;
+      }
+
+      // normal move can be done
       if (currentPlayer === "circle") {
         setIcon(circleSvg);
       } else {
@@ -84,10 +92,8 @@ const Square = ({
 
       setCurrentPlayer(currentPlayer === "circle" ? "cross" : "circle");
 
-      setGameState((prevState) => {
-        let newState = [...prevState];
-        const rowIndex = Math.floor(id / 3);
-        const colIndex = id % 3;
+      setGameState((gameState) => {
+        let newState = [...gameState];
         newState[rowIndex][colIndex] = myCurrentPlayer;
         return newState;
       });

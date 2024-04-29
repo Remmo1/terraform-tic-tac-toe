@@ -8,6 +8,8 @@ COPY package.json /tic-tac-toe/
 
 RUN npm install
 
+EXPOSE 3000
+
 CMD ["npm", "start"]
 
 # docker image build -t <image_name>:<tag> <path>

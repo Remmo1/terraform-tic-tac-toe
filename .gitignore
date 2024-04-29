@@ -44,3 +44,9 @@ out/
 **/terraform/*.pub
 **/terraform/*.pem
 **/terraform/.terraform
+
+### Keys ###
+**/deployment/keys/
+**/deployment/.terraform/
+**/deployment/.terraform.lock.hcl
+**/deployment/terraform.tfstate
