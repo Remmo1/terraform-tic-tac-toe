@@ -18,3 +18,5 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    environment:
+      - REACT_APP_BACKEND_LINK=http://34.207.121.52:8080/

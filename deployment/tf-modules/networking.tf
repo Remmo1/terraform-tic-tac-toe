@@ -10,7 +10,7 @@ resource "aws_vpc" "vpc_tf" {
 
 resource "aws_subnet" "subnet_tf" {
   vpc_id     = aws_vpc.vpc_tf.id
-  cidr_block = "10.0.0.0/28"
+  cidr_block = "10.0.1.0/28"
 
   tags = {
     Name = "tic-tac-toe-tf"
