@@ -57,6 +57,7 @@ const Login = () => {
           authenticate(email,password)
           .then((data)=>{
             setLoginErr('');
+            console.log(data);
             Navigate('/game');
           },(err)=>{
             console.log(err);

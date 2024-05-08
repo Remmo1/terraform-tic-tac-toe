@@ -32,6 +32,7 @@ const GameLogic = () => {
   
   useEffect(()=>{
     let user = userpool.getCurrentUser();
+    // console.log(user);
     // console.log(user.storage.accessToken);
     // console.log(user.storage.refreshToken);
     if(!user){
