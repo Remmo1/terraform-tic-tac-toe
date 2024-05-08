@@ -3,7 +3,7 @@ import { BrowserRouter,Routes, Route,Navigate  } from 'react-router-dom'
 import Home from './components/Home';
 import Signup from './components/Signup';
 import Login from './components/Login';
-import Dashboard from './components/Dashboard';
+import GameLogic from './game/GameLogic';
 
 import './App.css';
 import userpool from './userpool';
@@ -13,7 +13,7 @@ function App() {
   useEffect(()=>{
     let user=userpool.getCurrentUser();
       if(user){
-        <Navigate to="/dashboard" replace />
+        <Navigate to='/game' replace />
       }
   },[]);
 
@@ -23,7 +23,7 @@ function App() {
         <Route path='/' element={<Home />}/>
         <Route path='/signup' element={<Signup />}/>
         <Route path='/login' element={<Login />}/>
-        <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path='/game' element={<GameLogic />}/>
       </Routes>
     </BrowserRouter>
   );

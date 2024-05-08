@@ -57,7 +57,7 @@ const Login = () => {
           authenticate(email,password)
           .then((data)=>{
             setLoginErr('');
-            Navigate('/dashboard');
+            Navigate('/game');
           },(err)=>{
             console.log(err);
             setLoginErr(err.message)

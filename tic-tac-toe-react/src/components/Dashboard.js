@@ -1,7 +1,7 @@
 import { Button } from '@mui/material'
 import React,{useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
-import userpool from '../userpool'
+import userpool from '../userpool';
 import { logout } from '../services/authenticate';
 
 const Dashboard = () => {
@@ -10,7 +10,10 @@ const Dashboard = () => {
 
   useEffect(()=>{
     let user=userpool.getCurrentUser();
-    console.log(user);
+    console.log(user.storage.accessToken);
+    console.log(user.storage.refreshToken);
+    
+
     if(!user){
       Navigate('/login');
     }

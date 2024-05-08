@@ -3,6 +3,10 @@ import "./GameLogic.css";
 import Square from "./Square";
 import { io } from "socket.io-client";
 import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
+import userpool from '../userpool';
+import { Button } from '@mui/material'
+import { logout } from '../services/authenticate';
 
 const renderFrom = [
   [1, 2, 3],
@@ -14,6 +18,7 @@ const backendLink = process.env.REACT_APP_BACKEND_LINK;
 const backendPort = 8080;
 
 const GameLogic = () => {
+  const Navigate = useNavigate();
   const [gameState, setGameState] = useState(renderFrom);
   const [currentPlayer, setCurrentPlayer] = useState("circle");
   const [finishedState, setFinishetState] = useState(false);
@@ -23,6 +28,22 @@ const GameLogic = () => {
   const [playerName, setPlayerName] = useState("");
   const [opponentName, setOpponentName] = useState(null);
   const [playingAs, setPlayingAs] = useState(null);
+
+  
+  useEffect(()=>{
+    let user=userpool.getCurrentUser();
+    console.log(user.storage.accessToken);
+    console.log(user.storage.refreshToken);
+    
+
+    if(!user){
+      Navigate('/login');
+    }
+  },[]);
+
+  const handleLogoout=()=>{
+    logout();
+  };
 
   const checkWinner = () => {
     // row dynamic
@@ -154,6 +175,15 @@ const GameLogic = () => {
         <button onClick={playOnlineClick} className="playOnline">
           Play Online
         </button>
+        <div className='Dashboard'>
+      <Button
+        style={{margin:"10px"}}
+        variant='contained'
+        onClick={handleLogoout}
+      >
+        Logout
+      </Button>
+    </div>
       </div>
     );
   }
