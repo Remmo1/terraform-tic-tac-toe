@@ -31,14 +31,13 @@ const GameLogic = () => {
 
   
   useEffect(()=>{
-    let user=userpool.getCurrentUser();
-    console.log(user.storage.accessToken);
-    console.log(user.storage.refreshToken);
-    
-
+    let user = userpool.getCurrentUser();
+    // console.log(user.storage.accessToken);
+    // console.log(user.storage.refreshToken);
     if(!user){
       Navigate('/login');
     }
+    
   },[]);
 
   const handleLogoout=()=>{
@@ -99,17 +98,8 @@ const GameLogic = () => {
   }, [gameState]);
 
   const takePlayerName = async () => {
-    const result = await Swal.fire({
-      title: "Please enter the name",
-      input: "text",
-      showCancelButton: true,
-      inputValidator: (value) => {
-        if (!value) {
-          return "Name can't be empty!";
-        }
-      },
-    });
-
+    let user = userpool.getCurrentUser();
+    let result = user.getUsername();
     return result;
   };
 
@@ -145,13 +135,7 @@ const GameLogic = () => {
   });
 
   async function playOnlineClick() {
-    const result = await takePlayerName();
-
-    if (!result.isConfirmed) {
-      return;
-    }
-
-    const username = result.value;
+    const username = await takePlayerName();
     setPlayerName(username);
 
   

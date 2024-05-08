@@ -85,7 +85,7 @@ const Signup = () => {
             } else {
               console.log(data);
               alert('User Added Successfully');
-              Navigate('/dashboard');
+              Navigate('/game');
             }
           });
         }
