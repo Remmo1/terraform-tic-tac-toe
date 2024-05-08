@@ -138,7 +138,6 @@ const GameLogic = () => {
     const username = await takePlayerName();
     setPlayerName(username);
 
-  
     const backendAddress = backendLink || window.location.protocol + '//' + window.location.hostname + ':' + backendPort;
     
     console.log(backendAddress);
@@ -160,14 +159,14 @@ const GameLogic = () => {
           Play Online
         </button>
         <div className='Dashboard'>
-      <Button
-        style={{margin:"10px"}}
-        variant='contained'
-        onClick={handleLogoout}
-      >
-        Logout
-      </Button>
-    </div>
+          <Button
+            style={{margin:"10px"}}
+            variant='contained'
+            onClick={handleLogoout}
+          >
+            Logout
+          </Button>
+        </div>
       </div>
     );
   }
@@ -176,6 +175,13 @@ const GameLogic = () => {
     return (
       <div className="waiting">
         <p>Waiting for opponent</p>
+        <Button
+          style={{margin:"70px"}}
+          variant='contained'
+          onClick={handleLogoout}
+        >
+          Logout
+        </Button>
       </div>
     );
   }
@@ -244,6 +250,13 @@ const GameLogic = () => {
       {finishedState && finishedState === "opponentLeftMatch" && (
         <h2>You won the match, Opponent has left</h2>
       )}
+      <Button
+        style={{margin:"10px"}}
+        variant='contained'
+        onClick={handleLogoout}
+      >
+        Logout
+      </Button>
     </div>
   );
 };
