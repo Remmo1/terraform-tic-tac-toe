@@ -30,14 +30,3 @@ function App() {
 }
 
 export default App;
-
-
-// const App = () => {
-//   return (
-//     <div className="App">
-//       <GameLogic />
-//     </div>
-//   );
-// };
-
-// export default App;

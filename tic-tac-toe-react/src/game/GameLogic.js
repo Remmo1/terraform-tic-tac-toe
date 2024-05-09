@@ -135,16 +135,25 @@ const GameLogic = () => {
     setOpponentName(data.opponentName);
   });
 
+
   async function playOnlineClick() {
     const username = await takePlayerName();
     setPlayerName(username);
 
     const backendAddress = backendLink || window.location.protocol + '//' + window.location.hostname + ':' + backendPort;
-    
-    console.log(backendAddress);
+    console.log(`Backend address: ${backendAddress}`);
+
+    let accessToken = localStorage.getItem('token');
     const newSocket = io(backendAddress, {
       autoConnect: true,
+      extraHeaders: {
+        "token": accessToken
+      }
     });
+
+    newSocket?.emit("auth", {
+      token: accessToken,
+    })
 
     newSocket?.emit("request_to_play", {
       playerName: username,
