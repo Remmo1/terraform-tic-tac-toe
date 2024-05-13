@@ -9,6 +9,16 @@ spring:
           jwk-set-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_9LgcvyFtD/.well-known/jwks.json
           issuer-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_9LgcvyFtD
 
+  datasource:
+    url: jdbc:postgresql://localhost:5432/games
+    username: uzytkownik
+    password: P@ssw0rd!
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
 server:
   port: 8000
 
