@@ -95,6 +95,9 @@ const GameLogic = () => {
     const winner = checkWinner();
     if (winner) {
       setFinishetState(winner);
+      socket.emit("endGame", {
+        result: winner
+      })
     }
   }, [gameState]);
 

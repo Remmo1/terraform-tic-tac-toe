@@ -11,4 +11,5 @@ public class Room {
     private UUID id;
     private Player current;
     private Player opponent;
+    private String move;
 }
