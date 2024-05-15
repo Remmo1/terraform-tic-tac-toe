@@ -10,9 +10,6 @@ const Dashboard = () => {
 
   useEffect(()=>{
     let user=userpool.getCurrentUser();
-    console.log(user.storage.accessToken);
-    console.log(user.storage.refreshToken);
-    
 
     if(!user){
       Navigate('/login');

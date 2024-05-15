@@ -57,6 +57,7 @@ const Login = () => {
           authenticate(email,password)
           .then((data)=>{
             setLoginErr('');
+            localStorage.setItem('token', data.accessToken.jwtToken);
             Navigate('/game');
           },(err)=>{
             console.log(err);

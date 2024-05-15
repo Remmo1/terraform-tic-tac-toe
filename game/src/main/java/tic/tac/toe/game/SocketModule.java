@@ -6,10 +6,12 @@ import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import tic.tac.toe.game.db.DbService;
 import tic.tac.toe.game.dtos.NickRequest;
 import tic.tac.toe.game.dtos.Player;
 import tic.tac.toe.game.dtos.Room;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
@@ -19,22 +21,50 @@ public class SocketModule {
     private final Map<UUID, Player> allPlayers = new HashMap<>();
     private final List<Room> allRooms = new ArrayList<>();
 
-    public SocketModule(SocketIOServer server) {
+    private final DbService dbService;
+
+    public SocketModule(SocketIOServer server, DbService dbService) {
+        this.dbService = dbService;
         server.addConnectListener(this.onConnected());
         server.addDisconnectListener(this.onDisconnected());
         server.addEventListener("request_to_play", NickRequest.class, this.onRequestToPlay());
         server.addEventListener("playerMoveFromClient", Map.class, this.onPlayerMoveFromClient());
+        server.addEventListener("endGame", Map.class, this.onEndGame());
+    }
+
+    private DataListener<Map> onEndGame() {
+        return (client, data, ackSender) -> {
+            var actualRoom = findRoomForPlayer(client.getSessionId());
+            client.disconnect();
+            if (actualRoom == null) {
+                return;
+            }
+
+            var result = data.get("result");
+            if (result.equals("draw")) {
+                log.info("Room {}: it's a draw!", actualRoom.getId());
+                result = 'd';
+            } else {
+                log.info("Room {}: {} won the game ", actualRoom.getId(), result);
+                if (result.equals("circle")) result = 'o';
+                else result = 'x';
+            }
+            actualRoom.setMove(actualRoom.getMove() + result);
+
+            synchronized (this) {
+                dbService.saveResult(actualRoom.getId(), actualRoom.getCross().getName(), actualRoom.getCircle().getName(), actualRoom.getStartTime(), LocalDateTime.now(), actualRoom.getMove());
+            }
+            allRooms.removeIf(r -> r.getId() == actualRoom.getId());
+        };
     }
 
     private DataListener<Map> onPlayerMoveFromClient() {
         return (socketIOClient, gameState, ackRequest) -> {
-            var actualRoom = allRooms.stream().filter(r -> (r.getCurrent().getId() == socketIOClient.getSessionId())
-                    || (r.getOpponent().getId() == socketIOClient.getSessionId())).findAny();
-            if (actualRoom.isEmpty())
-                throw new RuntimeException("Room not found for socket id: " + socketIOClient.getSessionId());
+            var actualRoom = findRoomForPlayer(socketIOClient.getSessionId());
 
-            log.info("Room {}: Player {} moves: {}", actualRoom.get().getId(),
+            log.info("Room {}: Player {} moves: {}", actualRoom.getId(),
                     allPlayers.get(socketIOClient.getSessionId()).getName(), gameState.get("state"));
+            actualRoom.setMove(actualRoom.getMove() + ((HashMap) gameState.get("state")).get("id").toString());
             var rival = allPlayers.get(socketIOClient.getSessionId()).getRival();
             rival.getSocketIOClient().sendEvent("playerMoveFromServer", gameState);
         };
@@ -72,9 +102,9 @@ public class SocketModule {
                 actualPlayer.setPlaying(true);
                 opponent.setPlaying(true);
 
-                Room newRoom = Room.builder().id(UUID.randomUUID()).current(actualPlayer).opponent(opponent).build();
+                Room newRoom = Room.builder().id(UUID.randomUUID()).cross(actualPlayer).circle(opponent).startTime(LocalDateTime.now()).move("").build();
                 allRooms.add(newRoom);
-                log.info("Room {} created for: {} vs {}", newRoom.getId(), newRoom.getCurrent().getName(), newRoom.getOpponent().getName());
+                log.info("Room {} created for: {} vs {}", newRoom.getId(), newRoom.getCross().getName(), newRoom.getCircle().getName());
 
                 var playerJson = Map.of(
                         "opponentName", opponent.getName(),
@@ -101,16 +131,30 @@ public class SocketModule {
 
             actualPlayer.setOnline(false);
             actualPlayer.setPlaying(false);
-            var actualRoom = allRooms.stream().filter(r -> (r.getCurrent().getId() == client.getSessionId())
-                    || (r.getOpponent().getId() == client.getSessionId())).findAny();
+            UUID clientId = client.getSessionId();
+            actualPlayer.getRival().getSocketIOClient().sendEvent("opponentLeftMatch");
+            allPlayers.remove(client.getSessionId());
 
-            if (actualPlayer.getRival() != null && actualRoom.isPresent()) {
-                actualPlayer.getRival().getSocketIOClient().sendEvent("opponentLeftMatch");
-                log.info("Room {} closed: Player {} left the game", actualPlayer.getId(), allPlayers.get(client.getSessionId()).getName());
-                allRooms.remove(actualRoom.get());
-                allPlayers.remove(client.getSessionId());
-            }
+//            var actualRoom = findRoomForPlayer(clientId);
+//            if (actualRoom != null) {
+//                log.info("Room {} closed: Player {} left the game", actualPlayer.getId(), allPlayers.get(clientId).getName());
+//                allRooms.remove(actualRoom);
+//            }
         };
+    }
+
+    private Room findRoomForPlayer(UUID socketId) {
+        var actualRoom = allRooms.stream().filter(r -> (r.getCross().getId() == socketId)
+                || (r.getCircle().getId() == socketId)).findAny();
+        return actualRoom.orElse(null);
+    }
+
+    private Player getRival(UUID socketId) {
+        var actualPlayer = allPlayers.get(socketId);
+        if (Boolean.TRUE.equals(actualPlayer.getPlaying())) {
+            return actualPlayer.getRival();
+        }
+        return null;
     }
 
 }

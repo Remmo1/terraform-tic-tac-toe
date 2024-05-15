@@ -20,3 +20,18 @@ services:
       - "3000:3000"
     environment:
       - REACT_APP_BACKEND_LINK=http://34.207.121.52:8080/
+  
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: games
+      POSTGRES_USER: uzytkownik
+      POSTGRES_PASSWORD: P@ssw0rd!
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

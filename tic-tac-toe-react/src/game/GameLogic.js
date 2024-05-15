@@ -32,6 +32,7 @@ const GameLogic = () => {
   
   useEffect(()=>{
     let user = userpool.getCurrentUser();
+    // console.log(user);
     // console.log(user.storage.accessToken);
     // console.log(user.storage.refreshToken);
     if(!user){
@@ -94,6 +95,9 @@ const GameLogic = () => {
     const winner = checkWinner();
     if (winner) {
       setFinishetState(winner);
+      socket.emit("endGame", {
+        result: winner
+      })
     }
   }, [gameState]);
 
@@ -134,16 +138,25 @@ const GameLogic = () => {
     setOpponentName(data.opponentName);
   });
 
+
   async function playOnlineClick() {
     const username = await takePlayerName();
     setPlayerName(username);
 
     const backendAddress = backendLink || window.location.protocol + '//' + window.location.hostname + ':' + backendPort;
-    
-    console.log(backendAddress);
+    console.log(`Backend address: ${backendAddress}`);
+
+    let accessToken = localStorage.getItem('token');
     const newSocket = io(backendAddress, {
       autoConnect: true,
+      extraHeaders: {
+        "token": accessToken
+      }
     });
+
+    newSocket?.emit("auth", {
+      token: accessToken,
+    })
 
     newSocket?.emit("request_to_play", {
       playerName: username,
