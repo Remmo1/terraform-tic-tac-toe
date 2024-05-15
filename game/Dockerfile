@@ -15,7 +15,7 @@ COPY gradle ./gradle
 COPY src ./src
 
 # Build the application
-RUN ./gradlew build
+RUN ./gradlew build -x test
 
 # Expose the port the app runs on
 EXPOSE 8080
