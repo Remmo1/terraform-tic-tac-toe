@@ -18,17 +18,6 @@ variable "az_count" {
     default = "2"
 }
 
-variable "app_image" {
-    description = "Docker image to run in the ECS cluster"
-    default = "bradfordhamilton/crystal_blockchain:latest"
-}
-
-variable "app_port" {
-    description = "Port exposed by the docker image to redirect traffic to"
-    default = 3000
-
-}
-
 variable "app_count" {
     description = "Number of docker containers to run"
     default = 3
@@ -40,10 +29,55 @@ variable "health_check_path" {
 
 variable "fargate_cpu" {
     description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units)"
-    default = "1024"
+    default = "4096"
 }
 
 variable "fargate_memory" {
+    description = "Fargate instance memory to provision (in MiB)"
+    default = "8192"
+}
+
+data "aws_iam_role" "ecs_task_execution_role" {
+  name = "labRole"
+}
+
+// application
+variable "db_image" {
+    description = "Docker image to run in the ECS cluster"
+    default = "postgres:16-alpine"
+}
+
+variable "db_port" {
+    description = "Port exposed by the docker image to redirect traffic to"
+    default = 5432
+}
+
+variable "backend_image" {
+    description = "Docker image to run in the ECS cluster"
+    default = "471112957000.dkr.ecr.us-east-1.amazonaws.com/tic-tac-toe-spring:latest"
+}
+
+variable "backend_port" {
+    description = "Port exposed by the docker image to redirect traffic to"
+    default = 8080
+}
+
+variable "frontend_image" {
+    description = "Docker image to run in the ECS cluster"
+    default = "471112957000.dkr.ecr.us-east-1.amazonaws.com/tic-tac-toe-react:latest"
+}
+
+variable "frontend_port" {
+    description = "Port exposed by the docker image to redirect traffic to"
+    default = 3000
+}
+
+variable "app_cpu" {
+    description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units)"
+    default = "1024"
+}
+
+variable "app_memory" {
     description = "Fargate instance memory to provision (in MiB)"
     default = "2048"
 }

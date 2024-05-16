@@ -2,11 +2,8 @@ version: '3.8'
 
 services:
   backend:
-    # image: remmo1/tic-tac-toe-spring:0.0.1-SNAPSHOT
+    image: remmo1/tic-tac-toe-spring:0.1.1-SNAPSHOT
     container_name: backend
-    build:
-      context: ./game
-      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
@@ -16,11 +13,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=P@ssw0rd!
   
   frontend:
-    # image: remmo1/tic-tac-toe-react:0.0.1-SNAPSHOT
+    image: remmo1/tic-tac-toe-react:0.1.1-SNAPSHOT
     container_name: frontend
-    build:
-      context: ./tic-tac-toe-react
-      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
