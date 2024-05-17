@@ -20,7 +20,7 @@ variable "az_count" {
 
 variable "app_count" {
     description = "Number of docker containers to run"
-    default = 3
+    default = 1
 }
 
 variable "health_check_path" {
