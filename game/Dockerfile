@@ -15,13 +15,13 @@ COPY gradle ./gradle
 COPY src ./src
 
 # Build the application
-RUN ./gradlew build
+RUN ./gradlew build -x test
 
 # Expose the port the app runs on
 EXPOSE 8080
 
 # Run the application
-CMD ["java", "-jar", "build/libs/game-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "build/libs/game-0.1.1-SNAPSHOT.jar"]
 
 # docker build --build-arg JAR_FILE=build/libs/game-0.0.1-SNAPSHOT.jar -t remmo1/tic-tac-toe-spring:0.0.1-SNAPSHOT .
 # docker run -p 8080:8080 remmo1/tic-tac-toe-spring:0.0.1-SNAPSHOT
