@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./GameLogic.css";
 import Square from "./Square";
 import { io } from "socket.io-client";
-import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
 import userpool from '../userpool';
-import { Button } from '@mui/material'
+import { Button, useThemeProps } from '@mui/material'
 import { logout } from '../services/authenticate';
+import { CognitoRefreshToken } from "amazon-cognito-identity-js";
 
 const renderFrom = [
   [1, 2, 3],
@@ -31,14 +31,34 @@ const GameLogic = () => {
 
   
   useEffect(()=>{
-    let user = userpool.getCurrentUser();
-    // console.log(user);
-    // console.log(user.storage.accessToken);
-    // console.log(user.storage.refreshToken);
-    if(!user){
+    var cognitoUser = userpool.getCurrentUser();
+    if(!cognitoUser) {
       Navigate('/login');
     }
+
+    var cognitoUser = userpool.getCurrentUser();
     
+    var refreshToken = new CognitoRefreshToken({ RefreshToken: localStorage.getItem('refresh')})
+  
+    cognitoUser.getSession(function(err, session) {
+      localStorage.setItem('token', session.accessToken.jwtToken);
+        if (err) {                
+          res.send(err);
+        }
+        else {
+          if (!session.isValid()) {
+            /* Session Refresh */
+            cognitoUser.refreshSession(refreshToken, (err, session) => {
+              if (err) { //throw err;
+                  console.log('In the err' + err);
+              }
+              else {
+                  localStorage.setItem('token', session.accessToken.jwtToken);
+              }
+            });   
+          }
+        }
+      });
   },[]);
 
   const handleLogoout=()=>{
@@ -147,6 +167,7 @@ const GameLogic = () => {
     console.log(`Backend address: ${backendAddress}`);
 
     let accessToken = localStorage.getItem('token');
+    console.log(accessToken);
     const newSocket = io(backendAddress, {
       autoConnect: true,
       extraHeaders: {

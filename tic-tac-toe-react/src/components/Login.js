@@ -58,6 +58,7 @@ const Login = () => {
           .then((data)=>{
             setLoginErr('');
             localStorage.setItem('token', data.accessToken.jwtToken);
+            localStorage.setItem('refresh', data.refreshToken.token);
             Navigate('/game');
           },(err)=>{
             console.log(err);
