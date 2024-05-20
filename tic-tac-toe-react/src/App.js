@@ -4,6 +4,7 @@ import Home from './components/Home';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import GameLogic from './game/GameLogic';
+import ResultTable from './game/ResultTable';
 
 import './App.css';
 import userpool from './userpool';
@@ -24,6 +25,7 @@ function App() {
         <Route path='/signup' element={<Signup />}/>
         <Route path='/login' element={<Login />}/>
         <Route path='/game' element={<GameLogic />}/>
+        <Route path='/result' element={<ResultTable />}/>
       </Routes>
     </BrowserRouter>
   );

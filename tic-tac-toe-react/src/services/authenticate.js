@@ -1,4 +1,4 @@
-import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
+import { AuthenticationDetails, CognitoUser, CognitoRefreshToken } from 'amazon-cognito-identity-js';
 import userpool from '../userpool';
 export const authenticate=(Email,Password)=>{
     return new Promise((resolve,reject)=>{
@@ -30,3 +30,34 @@ export const logout = () => {
     user.signOut();
     window.location.href = '/';
 };
+
+export const getNick = () => {
+    var cognitoUser = userpool.getCurrentUser();
+    return cognitoUser.getUsername();
+}
+
+export const refreshSession = () => {
+    var cognitoUser = userpool.getCurrentUser();
+    
+    var refreshToken = new CognitoRefreshToken({ RefreshToken: localStorage.getItem('refresh')})
+  
+    cognitoUser.getSession(function(err, session) {
+      localStorage.setItem('token', session.accessToken.jwtToken);
+        if (err) {                
+          res.send(err);
+        }
+        else {
+          if (!session.isValid()) {
+            /* Session Refresh */
+            cognitoUser.refreshSession(refreshToken, (err, session) => {
+              if (err) { //throw err;
+                  console.log('In the err' + err);
+              }
+              else {
+                  localStorage.setItem('token', session.accessToken.jwtToken);
+              }
+            });   
+          }
+        }
+      });
+}
