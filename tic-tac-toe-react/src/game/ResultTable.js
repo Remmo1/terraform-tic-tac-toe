@@ -29,14 +29,14 @@ const ResultTable = () => {
 
   const getRowStyle = (moves, circlePlayer, crossPlayer) => {
     if (
-      nick == circlePlayer && moves.includes('o') ||
-      nick == crossPlayer && moves.includes('x')
+      (nick === circlePlayer && moves.includes('o')) ||
+      (nick === crossPlayer && moves.includes('x'))
     ) {
       return { backgroundColor: 'green', color: 'white' };
     } 
     else if (
-      nick == circlePlayer && moves.includes('x') ||
-      nick == crossPlayer && moves.includes('o')
+      (nick === circlePlayer && moves.includes('x')) ||
+      (nick === crossPlayer && moves.includes('o'))
     ) {
       return { backgroundColor: 'red', color: 'white' };
     } 

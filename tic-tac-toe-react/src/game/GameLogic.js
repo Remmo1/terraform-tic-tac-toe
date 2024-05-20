@@ -4,8 +4,8 @@ import Square from "./Square";
 import { io } from "socket.io-client";
 import { useNavigate } from 'react-router-dom';
 import userpool from '../userpool';
-import { Button, useThemeProps } from '@mui/material'
-import { logout } from '../services/authenticate';
+import { Button } from '@mui/material'
+import { refreshSession, logout } from '../services/authenticate';
 import { CognitoRefreshToken } from "amazon-cognito-identity-js";
 
 const renderFrom = [
@@ -35,30 +35,7 @@ const GameLogic = () => {
     if(!cognitoUser) {
       Navigate('/login');
     }
-
-    var cognitoUser = userpool.getCurrentUser();
-    
-    var refreshToken = new CognitoRefreshToken({ RefreshToken: localStorage.getItem('refresh')})
-  
-    cognitoUser.getSession(function(err, session) {
-      localStorage.setItem('token', session.accessToken.jwtToken);
-        if (err) {                
-          res.send(err);
-        }
-        else {
-          if (!session.isValid()) {
-            /* Session Refresh */
-            cognitoUser.refreshSession(refreshToken, (err, session) => {
-              if (err) { //throw err;
-                  console.log('In the err' + err);
-              }
-              else {
-                  localStorage.setItem('token', session.accessToken.jwtToken);
-              }
-            });   
-          }
-        }
-      });
+    refreshSession();
   },[]);
 
   const handleLogoout=()=>{

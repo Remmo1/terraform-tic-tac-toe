@@ -29,12 +29,12 @@ variable "health_check_path" {
 
 variable "fargate_cpu" {
     description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units)"
-    default = "4096"
+    default = "2048"
 }
 
 variable "fargate_memory" {
     description = "Fargate instance memory to provision (in MiB)"
-    default = "8192"
+    default = "4096"
 }
 
 data "aws_iam_role" "ecs_task_execution_role" {
@@ -74,10 +74,10 @@ variable "frontend_port" {
 
 variable "app_cpu" {
     description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units)"
-    default = "1024"
+    default = "512"
 }
 
 variable "app_memory" {
     description = "Fargate instance memory to provision (in MiB)"
-    default = "2048"
+    default = "1024"
 }

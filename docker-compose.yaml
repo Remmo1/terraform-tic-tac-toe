@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   backend:
-    image: remmo1/tic-tac-toe-spring:0.1.1-SNAPSHOT
+    image: remmo1/tic-tac-toe-spring:0.1.2-SNAPSHOT
     container_name: backend
     ports:
       - "8080:8080"
@@ -13,7 +13,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=P@ssw0rd!
   
   frontend:
-    image: remmo1/tic-tac-toe-react:0.1.1-SNAPSHOT
+    image: remmo1/tic-tac-toe-react:0.1.2-SNAPSHOT
     container_name: frontend
     ports:
       - "3000:3000"

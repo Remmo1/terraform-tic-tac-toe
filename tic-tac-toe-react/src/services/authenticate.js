@@ -44,7 +44,7 @@ export const refreshSession = () => {
     cognitoUser.getSession(function(err, session) {
       localStorage.setItem('token', session.accessToken.jwtToken);
         if (err) {                
-          res.send(err);
+          console.log(err);
         }
         else {
           if (!session.isValid()) {
