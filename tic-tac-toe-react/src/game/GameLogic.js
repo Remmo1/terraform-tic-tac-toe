@@ -65,6 +65,10 @@ const GameLogic = () => {
     logout();
   };
 
+  const handleResults = () => {
+    Navigate('/result');
+  }
+
   const checkWinner = () => {
     // row dynamic
     for (let row = 0; row < gameState.length; row++) {
@@ -196,6 +200,13 @@ const GameLogic = () => {
           <Button
             style={{margin:"10px"}}
             variant='contained'
+            onClick={handleResults}
+          >
+            Results
+          </Button>
+          <Button
+            style={{margin:"10px"}}
+            variant='contained'
             onClick={handleLogoout}
           >
             Logout
@@ -207,16 +218,25 @@ const GameLogic = () => {
 
   if (playOnline && !opponentName) {
     return (
-      <div className="waiting">
-        <p>Waiting for opponent</p>
-        <Button
-          style={{margin:"70px"}}
-          variant='contained'
-          onClick={handleLogoout}
-        >
-          Logout
-        </Button>
-      </div>
+      <div className='main-div'>
+        <p className="waiting">Waiting for opponent</p>
+        <div className='Dashboard'>
+          <Button
+            style={{margin:"10px"}}
+            variant='contained'
+            onClick={handleResults}
+          >
+            Results
+          </Button>
+          <Button
+            style={{margin:"10px"}}
+            variant='contained'
+            onClick={handleLogoout}
+          >
+            Logout
+          </Button>
+        </div>
+    </div>
     );
   }
 
@@ -284,13 +304,22 @@ const GameLogic = () => {
       {finishedState && finishedState === "opponentLeftMatch" && (
         <h2>You won the match, Opponent has left</h2>
       )}
-      <Button
-        style={{margin:"10px"}}
-        variant='contained'
-        onClick={handleLogoout}
-      >
-        Logout
-      </Button>
+      <div className='Dashboard'>
+          <Button
+            style={{margin:"10px"}}
+            variant='contained'
+            onClick={handleResults}
+          >
+            Results
+          </Button>
+          <Button
+            style={{margin:"10px"}}
+            variant='contained'
+            onClick={handleLogoout}
+          >
+            Logout
+          </Button>
+        </div>
     </div>
   );
 };

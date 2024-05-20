@@ -78,7 +78,7 @@ const Login = () => {
           <TextField
             value={email}
             onChange={(e) => formInputChange("email", e.target.value)}
-            label="Email"
+            label="Username"
             helperText={emailErr}
           />
         </div>
