@@ -2,6 +2,7 @@
   padding: 20px;
   display: flex;
   justify-content: center;
+  overflow-y: scroll;
 }
 
 .styled-table {
