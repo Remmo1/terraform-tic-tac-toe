@@ -1,5 +1,31 @@
 [
   {
+    "name": "postgres_db",
+    "image": "${db_image}",
+    "cpu": ${app_cpu},
+    "memory": ${app_memory},
+    "networkMode": "awsvpc",
+    "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/cb-app",
+          "awslogs-region": "${aws_region}",
+          "awslogs-stream-prefix": "ecs"
+        }
+    },
+    "portMappings": [
+      {
+        "containerPort": ${db_port},
+        "hostPort": ${db_port}
+      }
+    ],
+    "environment": [
+      { "name": "POSTGRES_DB", "value": "games" },
+      { "name": "POSTGRES_USER", "value": "uzytkownik" },
+      { "name": "POSTGRES_PASSWORD", "value": "P@ssw0rd!"}
+    ]
+  },
+  {
     "name": "backend",
     "image": "${backend_image}",
     "cpu": ${app_cpu},
@@ -21,9 +47,9 @@
     ],
     "environment": [
       { "name": "SOCKET-SERVER_PORT", "value": "8080" },
-      { "name": "SPRING_DATASOURCE_URL", "value": "jdbc:postgresql://games.cxewo6sqey5x.us-east-1.rds.amazonaws.com:5432/plays" },
-      { "name": "SPRING_DATASOURCE_USERNAME", "value": "postgres" },
-      { "name": "SPRING_DATASOURCE_PASSWORD", "value": "aK08yEmSoyTkmO8KS3g5"}
+      { "name": "SPRING_DATASOURCE_URL", "value": "jdbc:postgresql://localhost:5432/games" },
+      { "name": "SPRING_DATASOURCE_USERNAME", "value": "uzytkownik" },
+      { "name": "SPRING_DATASOURCE_PASSWORD", "value": "P@ssw0rd!"}
     ]
   },
   {
