@@ -12,7 +12,7 @@ const ResultTable = () => {
   useEffect(() => {
     refreshSession();
     setNick(getNick);
-    axios.get('http://localhost:8000/result', {
+    axios.get('/result', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }

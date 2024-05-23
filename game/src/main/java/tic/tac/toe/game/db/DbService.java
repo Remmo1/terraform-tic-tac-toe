@@ -2,6 +2,7 @@ package tic.tac.toe.game.db;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class DbService {
@@ -33,6 +35,7 @@ public class DbService {
 
     public List<ResultDto> getAllResultsForPlayer() {
         var playerNick = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getCredentials()).getClaims().get("username").toString();
+        log.info("Player {} is checking his/her games", playerNick);
         return resultRepository.findAllByCirclePlayerOrCrossPlayer(playerNick, playerNick).stream().map(
                 r -> new ResultDto(r.getId(), r.getCirclePlayer(), r.getCrossPlayer(), r.getMoves(), r.getStartTime(), r.getEndTime())
         ).toList();

@@ -13,4 +13,4 @@ EXPOSE 3000
 CMD ["npm", "start"]
 
 # docker image build -t <image_name>:<tag> <path>
-# docker image build -t remmo1/tic-tac-toe-react:0.0.1-SNAPSHOT .
+# docker image build -t remmo1/tic-tac-toe-react:0.1.5-SNAPSHOT .
