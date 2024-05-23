@@ -13,6 +13,13 @@ resource "aws_alb_target_group" "app" {
     vpc_id      = aws_vpc.main.id
     target_type = "ip"
 
+    stickiness {
+      type = "app_cookie"
+      enabled = true
+      cookie_name = "Cookie"
+      cookie_duration = 600
+    }
+
     health_check {
         healthy_threshold   = "2"
         interval            = "30"
