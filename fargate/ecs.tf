@@ -19,6 +19,11 @@ data "template_file" "cb_app" {
         backend_port   = var.backend_port
         frontend_image = var.frontend_image
         frontend_port  = var.frontend_port
+
+        db_user = jsondecode(data.aws_secretsmanager_secret_version.secret_credentials.secret_string)["db_user"]
+        db_password = jsondecode(data.aws_secretsmanager_secret_version.secret_credentials.secret_string)["db_password"]
+        front_user_pool_id = jsondecode(data.aws_secretsmanager_secret_version.secret_credentials.secret_string)["front_user_pool_id"]
+        front_client_id = jsondecode(data.aws_secretsmanager_secret_version.secret_credentials.secret_string)["front_client_id"]
     }
 }
 

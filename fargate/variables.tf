@@ -81,3 +81,12 @@ variable "app_memory" {
     description = "Fargate instance memory to provision (in MiB)"
     default = "1024"
 }
+
+// secrets
+data "aws_secretsmanager_secret" "tic-tac-toe-credentials" {
+ name = "tic-tac-toe-credentials"
+}
+
+data "aws_secretsmanager_secret_version" "secret_credentials" {
+ secret_id = data.aws_secretsmanager_secret.tic-tac-toe-credentials.id
+}
